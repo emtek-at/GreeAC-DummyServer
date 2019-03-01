@@ -1,0 +1,41 @@
+1)
+AC -> Server Port 5000
+{"t":"dis","mac":"f4911e1959e3"}
+
+2)
+Server -> AC
+{"cid":"","i":1,"pack":"[enc msg]","t":"pack","tcid":"f4911e1959e3","uid":0}
+Verschlüsselt mit Masterkey
+enc msg: {"datHost":"hk.dis.gree.com","datHostPort":6100,"host":"23.99.100.149","ip":"23.99.100.149","ip2":"10.72.68.113","protocol":"TCP","t":"svr","tcpPort":16384,"udpPort":16384}
+
+3)
+AC -> Server Port [tcpPort von Schritt 2]
+{"t":"pack","i":1,"uid":0,"cid":"","tcid":"asvr","pack":"[enc msg]"}
+Verschlüsselt mit Masterkey
+enc msg: {"t":"devLogin","mac":"e31e597bf419a391","vender":"1"}
+	the mac given here is obscured, to get the right one the octets have to be moved
+		obscured 1:2:3:4:5:6:7:8 -> normalized 5:8:2:6:3:1
+		e.g.: e3:1e:59:7b:f4:19:a3:91 -> f4:91:1e:19:59:e3
+
+4)
+Server -> AC
+{"t":"pack","i":1,"tcid":"","cid":"","uid":0,"pack":"[enc msg]"}
+Verschlüsselt mit Masterkey
+enc msg: {"t":"loginRes","r":200,"cid":"f4911e1959e3","uid":0}
+
+5)
+AC -> Server Port [tcpPort von Schritt 2]
+{"t":"tm","uid":0,"cid":"f4911e1959e3"}
+
+6)
+Server -> AC
+{"t":"tm","time":"2019-02-2717:03:23"}
+
+7)
+AC -> Server [tcpPort von Schritt 2]
+{"t":"hb","uid":0,"cid":"f4911e1959e3"}
+
+8)
+Server -> AC
+{"t":"hbok"}
+
