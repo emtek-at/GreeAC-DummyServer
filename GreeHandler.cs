@@ -21,7 +21,7 @@ namespace DummyServer
             JObject req = JObject.Parse(input);
             string cmd = (string)req["t"];
             
-            Console.WriteLine("##################################################");
+            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+" ##################################################");
             Console.WriteLine(input);
 
             switch (cmd)
@@ -114,7 +114,7 @@ namespace DummyServer
             }
 
             response.text = response.text.Trim().Replace("\r", "").Replace("\n", "").Replace(" ", "");
-            Console.WriteLine("response: "+response.text);
+            Console.WriteLine("Response: "+response.text);
             
             return response;
         }
