@@ -18,51 +18,54 @@ namespace DummyServer
         public static void StartListening()
         {
             // Establish the local endpoint for the socket.  
-            // The DNS name of the computer  
-            // running the listener is "host.contoso.com".  
-            //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPAddress ipAddress = IPAddress.Any; 
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 5000);
 
-            // Create a TCP/IP socket.  
-            Socket listener = new Socket(ipAddress.AddressFamily,
-                SocketType.Stream, ProtocolType.Tcp);
 
             // Bind the socket to the local endpoint and listen for incoming connections.  
-            try
+            while (true)
             {
-                listener.Bind(localEndPoint);
-                listener.Listen(100);
-                
-                Console.WriteLine("GreeAC DummyServer Started");
-                Console.WriteLine("Domainname for AC Devices: "+Program.m_DomainName);
-                Console.WriteLine("IP Address for AC Devices: "+Program.m_ExternalIp);
-
-                while (true)
+                try
                 {
-                    // Set the event to nonsignaled state.  
-                    allDone.Reset();
+                    // Create a TCP/IP socket.  
+                    Socket listener = new Socket(ipAddress.AddressFamily,
+                        SocketType.Stream, ProtocolType.Tcp);
+                    
+                    listener.Bind(localEndPoint);
+                    listener.Listen(100);
 
-                    // Start an asynchronous socket to listen for connections.  
-                    Console.WriteLine("Waiting for a connection...");
-                    listener.BeginAccept(
-                        new AsyncCallback(AcceptCallback),
-                        listener);
+                    Console.WriteLine("GreeAC DummyServer Started");
+                    Console.WriteLine("Domainname for AC Devices: " + Program.m_DomainName);
+                    Console.WriteLine("IP Address for AC Devices: " + Program.m_ExternalIp);
 
-                    // Wait until a connection is made before continuing.  
-                    allDone.WaitOne();
+                    while (true)
+                    {
+                        try
+                        {
+                            // Set the event to nonsignaled state.  
+                            allDone.Reset();
+
+                            // Start an asynchronous socket to listen for connections.  
+                            Console.WriteLine("Waiting for a connection...");
+                            listener.BeginAccept(
+                                new AsyncCallback(AcceptCallback),
+                                listener);
+
+                            // Wait until a connection is made before continuing.  
+                            allDone.WaitOne();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.ToString());
+                        }
+                    }
                 }
-
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    System.Threading.Thread.Sleep(5000);
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-
-            Console.WriteLine("\nPress ENTER to continue...");
-            Console.Read();
-
         }
 
         public static void AcceptCallback(IAsyncResult ar)
