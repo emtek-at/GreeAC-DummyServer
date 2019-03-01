@@ -89,6 +89,7 @@ namespace DummyServer
         public static void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
+            bool bReadMore = true;
 
             // Retrieve the state object and the handler socket  
             // from the asynchronous state object.  
@@ -118,26 +119,34 @@ namespace DummyServer
                     //    content.Length, content);
 
                     GreeHandlerResponse response = GreeHandler.process(content);
+                    bReadMore = response.keepAlive;
+                    state.keepAlive = response.keepAlive;
+                    
                     if (response.text != "")
                     {
-                        state.keepAlive = response.keepAlive;
                         Send(state, response.text);
                     }
+                    else if (!response.keepAlive)
+                    {
+                        handler.Shutdown(SocketShutdown.Both);
+                        handler.Close();
+                        Console.WriteLine("Connection shutdown");
+                    }
 
-                    if (response.keepAlive)
+                    /*if (response.keepAlive)
                     {
                         handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                             new AsyncCallback(ReadCallback), state);
                     }
+                    */
                 }
-                //else
-                //{
-                    // Not all data received. Get more.  
-                //    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                //        new AsyncCallback(ReadCallback), state);
-                //}
-                
-                
+            }
+            
+            if(bReadMore)
+            {
+                // Not all data received. Get more.  
+                handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
             }
         }
 

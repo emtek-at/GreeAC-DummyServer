@@ -21,7 +21,7 @@ namespace DummyServer
             JObject req = JObject.Parse(input);
             string cmd = (string)req["t"];
             
-            Console.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+" ##################################################");
+            Console.WriteLine("################################################## "+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             Console.WriteLine(input);
 
             switch (cmd)
@@ -91,7 +91,11 @@ namespace DummyServer
                             //Console.WriteLine("response pack: "+resPackObj.ToString());
                             response.text = resObj.ToString();
                             response.keepAlive = true;
-                            
+                            break;
+                        default:
+                            Console.WriteLine("Request Pack unknown: "+(string)pack["t"]);
+                            response.text = "";
+                            response.keepAlive = false;
                             break;
                     }
                     
@@ -110,6 +114,11 @@ namespace DummyServer
 
                     response.text = resObj.ToString();
                     response.keepAlive = true;
+                    break;
+                default:
+                    Console.WriteLine("Request unknown: "+cmd);
+                    response.text = "";
+                    response.keepAlive = false;
                     break;
             }
 
