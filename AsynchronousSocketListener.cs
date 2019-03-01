@@ -22,7 +22,7 @@ namespace DummyServer
             // running the listener is "host.contoso.com".  
             //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             //IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPAddress ipAddress = IPAddress.Parse("172.22.20.104");  
+            IPAddress ipAddress = IPAddress.Any; 
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 5000);
 
             // Create a TCP/IP socket.  
