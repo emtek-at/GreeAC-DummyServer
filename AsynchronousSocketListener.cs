@@ -34,6 +34,10 @@ namespace DummyServer
             {
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
+                
+                Console.WriteLine("GreeAC DummyServer Started");
+                Console.WriteLine("Domainname for AC Devices: "+Program.m_DomainName);
+                Console.WriteLine("IP Address for AC Devices: "+Program.m_ExternalIp);
 
                 while (true)
                 {
