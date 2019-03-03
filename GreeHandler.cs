@@ -21,7 +21,7 @@ namespace DummyServer
             JObject req = JObject.Parse(input);
             string cmd = (string)req["t"];
             
-            Console.WriteLine("################################################## "+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            Console.WriteLine("################################################## "+DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"));
             Console.WriteLine(input);
 
             switch (cmd)
@@ -103,7 +103,7 @@ namespace DummyServer
                 case "tm": // get Time
                     Console.WriteLine("Request: Time");
                     resObj["t"] = "tm";
-                    resObj["time"] = DateTime.Now.ToString("yyyy-MM-ddHH:mm:ss");
+                    resObj["time"] = DateTime.Now.ToLocalTime().ToString("yyyy-MM-ddHH:mm:ss");
 
                     response.text = resObj.ToString();
                     response.keepAlive = true;
@@ -116,14 +116,14 @@ namespace DummyServer
                     response.keepAlive = true;
                     break;
                 default:
-                    Console.WriteLine("Request unknown: "+cmd);
+                    Console.WriteLine("Request: unknown: "+cmd);
                     response.text = "";
                     response.keepAlive = false;
                     break;
             }
 
-            response.text = response.text.Trim().Replace("\r", "").Replace("\n", "").Replace(" ", "");
-            Console.WriteLine("Response: "+response.text);
+            response.text = response.text.Trim().Replace("\r", "").Replace("\n", "").Replace(" ", "")+"\n";
+            Console.WriteLine("Response: "+response.text.Trim('\n'));
             
             return response;
         }

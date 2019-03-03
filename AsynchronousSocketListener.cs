@@ -112,12 +112,8 @@ namespace DummyServer
                 //Console.WriteLine("read: "+content);
                 if (content.IndexOf("\n") > -1)
                 {
+                    // All the data has been read from the client.
                     state.sb = new StringBuilder();
-                    // All the data has been read from the   
-                    // client. Display it on the console.  
-                    //Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
-                    //    content.Length, content);
-
                     GreeHandlerResponse response = GreeHandler.process(content);
                     bReadMore = response.keepAlive;
                     state.keepAlive = response.keepAlive;

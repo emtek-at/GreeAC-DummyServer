@@ -11,7 +11,9 @@ namespace DummyServer
         static void Main(string[] args)
         {
             
-            AsynchronousSocketListener.StartListening();
+            //AsynchronousSocketListener.StartListening();
+            GreeSocketHandler gsh = new GreeSocketHandler();
+            gsh.AcceptConnections();
         }
     }
 }
