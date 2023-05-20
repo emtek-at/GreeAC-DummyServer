@@ -11,7 +11,7 @@ COPY . ./
 RUN dotnet publish -c Release -o out
 
 EXPOSE 5000
-ENV DOMAIN_NAME=vladik.local
+ENV DOMAIN_NAME=emtek.at
 ENV EXTERNAL_IP=192.168.1.19
 
 ENTRYPOINT ["dotnet", "out/DummyServer.dll"]
