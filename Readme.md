@@ -1,6 +1,6 @@
 # Gree Dummy Server
 This project makes it possible to block all Internet traffic from your Gree AC Devices. 
-It is coded using the dotnet core 2.2 Framework in C#. The Server must listen on port 5000, because the AC Devices sends there first command to this port.
+It is coded using the dotnet core 6.0 in C#. The Server must listen on port 5000, because the AC Devices sends there first command to this port.
 There is also the possibility to run it in a docker container.
 
 # Installation
